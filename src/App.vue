@@ -52,7 +52,7 @@ html,body{
 }
 .header{
   width:100%;
-  height:12%;
+  height:60px;
   position:fixed;
   top:0;
   z-index:20;
@@ -93,17 +93,17 @@ html,body{
 }
 .menu,
 .search{
-  width:50px;
-  height:50px;
+  width:25px;
+  height:25px;
 }
 .main,
 .music{
-  width:60px;
-  height:60px;
+  width:30px;
+  height:30px;
 }
 .user{
-  width:65px;
-  height:65px;
+  width:30px;
+  height:33px;
 }
 .menu img,
 .main img,
