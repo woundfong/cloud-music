@@ -7,10 +7,10 @@
 
 <script>
 export default {
-  name: 'mymusic',
+  name: 'community',
   data () {
     return {
-      msg: 'Welcome to mymusic'
+      msg: 'Welcome to community'
     }
   }
 }

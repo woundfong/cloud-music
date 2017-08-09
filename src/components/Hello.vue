@@ -7,7 +7,7 @@ export default {
   name: 'hello',
   data () {
     return {
-      msg: 'Welcome to cloud-music ss'
+      msg: 'Welcome to cloud-music'
     }
   }
 }
@@ -15,5 +15,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  h1{
+    margin-top: 50%;
+  }
 </style>

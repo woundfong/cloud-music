@@ -8,14 +8,14 @@
           </div>
         </div>
         <div class="header-nav">
-          <div class="main">
-            <img src="../static/img/main2.png">
-          </div>
           <div class="music">
-            <img src="../static/img/music.png">
+            <router-link to="/myMusic"> <img src="../static/img/music.png"> </router-link>
           </div>
+          <div class="main">
+            <router-link to="/music"> <img src="../static/img/main2.png"> </router-link>
+          </div> 
           <div class="user">
-            <img src="../static/img/user.png">
+            <router-link to="/community"><img src="../static/img/user.png"> </router-link>
           </div>
         </div>
         <div class="header-search">
@@ -25,11 +25,7 @@
         </div>
       </div>
     </div>
-     <div class="nav">
-      <router-link class="nav-item" to="/">首页</router-link>
-      <router-link class="nav-item" to="/myMusic">我的音乐</router-link>
-      <router-link class="nav-item" to="/music">音乐</router-link>
-    </div> 
+     
     <router-view></router-view>
   </div>
 </template>
@@ -56,7 +52,7 @@ html,body{
 }
 .header{
   width:100%;
-  height:100px;
+  height:12%;
   position:fixed;
   top:0;
   z-index:20;
@@ -97,17 +93,17 @@ html,body{
 }
 .menu,
 .search{
-  width:25px;
-  height:25px;
+  width:50px;
+  height:50px;
 }
 .main,
 .music{
-  width:30px;
-  height:30px;
+  width:60px;
+  height:60px;
 }
 .user{
-  width:30px;
-  height:33px;
+  width:65px;
+  height:65px;
 }
 .menu img,
 .main img,
@@ -118,21 +114,5 @@ html,body{
   width:100%;
   height:100%;
 }
-
-/* .nav{
-    height: 80px;
-    line-height: 80px;
-    display: flex;
-    text-align: center;
-  }
-  .nav-item{
-    flex: 1;
-    text-decoration: none;
-  }
-  
-  .nav-item:hover,.nav-item:active{
-    color: white;
-    background-color: #C8C6C6;
-  } */
 
 </style>
