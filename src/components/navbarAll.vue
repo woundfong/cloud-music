@@ -8,13 +8,13 @@
           </div>
         </div>
         <div class="header-nav"  @click="link($event)">
-          <div class="myMusic" v-bind:class="{activeBar: isActive_myMusic}">
+          <div class="myMusic" v-bind:class="{activeBar: isActive_myMusic}" id="myMusic">
             <img src="../../static/img/music.png" id="myMusic">
           </div>
-          <div class="music" v-bind:class="{activeBar: isActive_music}">
+          <div class="music" v-bind:class="{activeBar: isActive_music}" id="music">
             <img src="../../static/img/main2.png" id="music">
           </div> 
-          <div class="community" v-bind:class="{activeBar: isActive_community}">
+          <div class="community" v-bind:class="{activeBar: isActive_community}" id="community">
             <img src="../../static/img/user.png" id="community">
           </div>
         </div>
@@ -24,6 +24,9 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="slideMenu">
+
     </div>
 </div>
 </template>
@@ -39,20 +42,22 @@ export default {
     }
   },
   methods: {
-  link: function (event) {
-    if (event.target.id == 'myMusic'){
-      this.isActive_myMusic = true;
-      this.isActive_community = this.isActive_music = false;
-    }else if (event.target.id == 'music') {
-      this.isActive_music = true;
-      this.isActive_community = this.isActive_myMusic = false;
-    }else if (event.target.id == 'community') {
-      this.isActive_community = true;
-      this.isActive_music = this.isActive_myMusic = false;
+    link: function (event) {
+      if (event.target.id == 'myMusic'){
+        this.isActive_myMusic = true;
+        this.isActive_community = this.isActive_music = false;
+      }else if (event.target.id == 'music') {
+        this.isActive_music = true;
+        this.isActive_community = this.isActive_myMusic = false;
+      }else if (event.target.id == 'community') {
+        this.isActive_community = true;
+        this.isActive_music = this.isActive_myMusic = false;
+      }
+      if (event.target.id) {
+        this.$router.push({ path: '/'+event.target.id })
+      }
     }
-    this.$router.push({ path: '/'+event.target.id })
   }
-}
 }
 
 </script>
@@ -105,22 +110,34 @@ export default {
 }
 .music, .myMusic {
   width:30px;
-  height:30px;
+  height:100%;
 }
 .community {
   width:30px;
-  height:33px;
+  height:100%;
 }
-.menu img, .myMusic img, .music img,
-.community img, .search img {
+.myMusic img, .music img,
+.community img{
+  display:block;
+  width:100%;
+  height:50%;
+  opacity: 0.5;
+  margin-top: 50%
+}
+.menu img, .search img {
   display:block;
   width:100%;
   height:100%;
   opacity: 0.5
 }
-
 .activeBar img {
   opacity: 1
+}
+
+.slideMenu {
+  height: 100%;
+  width: 70%;
+  background-color: red;
 }
 
 </style>
