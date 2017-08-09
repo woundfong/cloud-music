@@ -7,7 +7,7 @@ export default {
   name: 'hello',
   data () {
     return {
-      msg: 'Welcome to cloud-music'
+      msg: 'Welcome to cloud-music ss'
     }
   }
 }
