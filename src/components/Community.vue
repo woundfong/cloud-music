@@ -1,17 +1,21 @@
 <template>
   <div>
+    <!-- <navbar-all></navbar-all> -->
      <h1> {{ msg }} </h1>
   </div>
 </template>
 
-
 <script>
+import navbarAll from './navbarAll'
 export default {
   name: 'community',
   data () {
     return {
       msg: 'Welcome to community'
     }
+  },
+  components: {
+    navbarAll
   }
 }
 </script>

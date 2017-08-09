@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
-import MyMusic from '@/components/MyMusic'
-import Music from '@/components/Music'
-import Community from '@/components/Community'
+import hello from '@/components/hello'
+import myMusic from '@/components/myMusic'
+import music from '@/components/music'
+import community from '@/components/community'
 
 Vue.use(Router)
 
@@ -11,23 +11,23 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'home',
+      component: myMusic
     },
     {
       path: '/myMusic',
       name: 'myMusic',
-      component: MyMusic
+      component: myMusic
     },
     {
       path: '/music',
       name: 'music', 
-      component: Music
+      component: music
     },
     {
       path: '/community',
       name: 'community',
-      component: Community
+      component: community
     }
   ]
 })

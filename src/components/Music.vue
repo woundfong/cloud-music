@@ -1,17 +1,22 @@
 <template>
   <div>
+    <!-- <navbar-all></navbar-all> -->
     <h1> {{ msg }} </h1>
   </div>
 </template>
 
-
 <script>
+import navbarAll from './navbarAll'
+
 export default {
   name: 'music',
   data () {
     return {
       msg: 'Welcome to music'
     }
+  },
+  components: {
+    navbarAll
   }
 }
 </script>
