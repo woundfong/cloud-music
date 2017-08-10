@@ -7,7 +7,6 @@
 
 <script>
 import navbarAll from './navbarAll'
-var color="", fontSize=0;
 export default {
   name: 'community',
   data () {
@@ -15,7 +14,6 @@ export default {
       msg: 'Welcome to community'
     }
   },
- 
   components: {
     navbarAll
   }
