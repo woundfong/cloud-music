@@ -4,7 +4,7 @@
       <div class='header-main'>
         <div class="header-menu">
           <div class="menu">
-            <img src="../../static/img/menu.png">
+            <img src="../../static/img/menu.png" @click.stop="slide">
           </div>
         </div>
         <div class="header-nav"  @click="link($event)">
@@ -24,9 +24,40 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="slideMenu">
-
+  </div>
+    <div class="slideContainer" v-bind:style="{right: right}">
+      <div class="slideMenu">
+        <img src='../../static/img/background.jpg' id="backgroundImg">
+        <div class="allInfo">
+          <span id="avatar"> </span>
+          <div class="textInfo">
+            <span id="name">周焕丰</span>
+            <span id="level">Lv.5</span>
+            <span id="sign">签到</span>
+          </div>
+        </div>
+        <div>
+          <li v-for="(item, index) in slideMenus" :key="index">
+            {{item.text}}
+          </li>
+          <hr noshade="noshade">
+          <li v-for="(item, index) in around" :key="index">
+            {{item.text}}
+          </li>
+          <hr noshade="noshade">
+          <li v-for="(item, index) in functions" :key="index">
+            {{item.text}}
+          </li>
+        </div>
+        <hr style="opacity:0.1;position:relative;">
+        <div class="sliderFooter">
+          <span>夜间模式</span><span>设置</span><span>推出</span>
+        </div>
+        
+      </div>
+      <div class="emptySlider" @click="slideBack" v-bind:class="{emptySlide: isSliderShow}">
+        
+      </div>
     </div>
 </div>
 </template>
@@ -38,7 +69,29 @@ export default {
     return {
       isActive_myMusic: true,
       isActive_music: false,
-      isActive_community: false
+      isActive_community: false,
+      right: '100%',
+      isSliderShow: false,
+      slideMenus: [
+        {text: '我的消息', value: 'myMessage'},
+        {text: '会员中心', value: 'vipCenter'},
+        {text: '商城', value: 'store'},
+        {text: '在线听歌免流量', value: 'onlineEnjoy'}
+      ],
+      around: [
+        {text: '我的好友', value: 'myFriends'},
+        {text: '附近的人', value: 'around'}        
+      ],
+      functions: [
+        {text: '个性换肤', value: 'myFriends'},
+        {text: '听歌识曲', value: 'autoRecognize'},
+        {text: '定时停止播放', value: 'timer'},
+        {text: '扫一扫', value: 'scan'},
+        {text: '音乐闹钟', value: 'alarm'},
+        {text: '驾驶模式', value: 'driveMode'},
+        {text: '音乐云盘', value: 'cloud'},
+                     
+      ]
     }
   },
   methods: {
@@ -56,20 +109,69 @@ export default {
       if (event.target.id) {
         this.$router.push({ path: '/'+event.target.id })
       }
+    },
+    slide: function () {
+      var vm = this;
+      var slideMenu = document.querySelector('.slideMenu');
+      var interval = setInterval( function() {
+        var r = parseInt(vm.right)
+        if(r > 0) {
+          vm.right = r - 10 + '%';
+        }else{
+          clearInterval(interval);
+        }
+      }, 20);
+      this.isSliderShow = true;
+      this.$emit('toDisable', this.isSliderShow);
+    },
+    slideBack: function () {
+      console.log("inin")
+      if (this.isSliderShow) {
+        console.log("in");
+        var vm = this;
+        var slideMenu = document.querySelector('.slideMenu');
+        var interval = setInterval( function() {
+          var r = parseInt(vm.right)
+          if(r < 100) {
+            vm.right = r + 10 + '%';
+          }else{
+            clearInterval(interval);
+          }
+        }, 20);
+        this.isSliderShow = false;
+        this.$emit('toDisable', this.isSliderShow);
+      }
     }
   }
 }
 
 </script>
 
+<style>
+.menu, .search {
+  width:25px;
+  height:25px;
+}
+.menu img, .search img {
+  display:block;
+  width:100%;
+  height:100%;
+}
+</style>
+
+
 <style scoped>
+
+html,body {
+  overflow: auto;
+}
+
 .header {
   width:100%;
   height:60px;
   position:fixed;
   top:0;
   z-index:20;
-  opacity:1;
   background:#f44336;
   box-shadow:0px 1px 5px #ccc;
 }
@@ -104,10 +206,7 @@ export default {
   justify-content:center;
   align-items:center;
 }
-.menu, .search {
-  width:25px;
-  height:25px;
-}
+
 .music, .myMusic {
   width:30px;
   height:100%;
@@ -124,21 +223,93 @@ export default {
   opacity: 0.5;
   margin-top: 50%
 }
-.menu img, .search img {
-  display:block;
-  width:100%;
-  height:100%;
-  opacity: 0.5
-}
+
 .activeBar img {
   opacity: 1
 }
-
+.slideContainer{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 100;
+  top: 0;
+}
 .slideMenu {
   height: 100%;
-  width: 70%;
-  background-color: red;
+  width: 85%;
+  float: left;
+  background-color: white;
 }
-
+li {
+  list-style: none;
+  margin: 10px 0 0 10px;
+  font-size: 15px;
+}
+.emptySlider {
+  width: 15%;
+  height: 100%;
+  float: right;
+}
+.emptySlide {
+  background-color: white;
+  opacity: 0.5;
+}
+#backgroundImg {
+  width: 100%;
+}
+.allInfo {
+  position: absolute;
+  top: 10%;
+  width: 85%;
+  text-align: left;
+  padding-left: 10px;
+}
+#avatar {
+    background-image: url("../../static/img/avatar.jpg");
+    display: inline-block;
+    width: 65px;
+    height: 65px;
+    border-radius: 65px;
+    background-size: 65px 65px;
+    background-color: #ccc;
+}
+.background-text {
+  color: white;
+  width: 100%;
+  position: absolute;
+  top: 10%;
+}
+.textInfo {
+  position: relative;
+  color: white;
+  margin-left: 4px;
+  display: block;
+}
+#level {
+  border: 1px solid white;
+  border-radius: 6px;
+  font-size: 0.5em;
+  padding: 0 2px;
+}
+#sign {
+  position: absolute;
+  margin-top: -3px;
+  border: 1px solid white;
+  border-radius: 16px;
+  left: 78%;
+  font-size: 0.8em;
+  padding: 4px 8px;
+}
+hr {
+  opacity:0.2;
+  height:6px;
+}
+.sliderFooter {
+  position: fixed;
+  display: inline-block;
+}
+.sliderFooter span {
+  margin-left: 20px;
+}
 </style>
 

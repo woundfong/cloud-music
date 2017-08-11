@@ -1,5 +1,6 @@
 <template>
   <div>
+    <navbar-all></navbar-all>
     <div class="carousel-wrap" id="carousel">
       <transition-group tag="ul" class="slide-ul" name="list">
         <li v-for="(list, index) in slideList" :key="index" v-show="index===currentIndex" @mouseover="stop" @mouseout="go">

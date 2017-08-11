@@ -1,21 +1,31 @@
 <template>
   <div id="app">
-    <navbar-all></navbar-all>
     <router-view></router-view>
+    <footerPlayer />
   </div>
 </template>
 
 <script>
 import navbarAll from './components/navbarAll'
+import footerPlayer from './components/footerPlayer'
 
 export default {
   name: 'app',
   data () {
     return {
+      isSliderShow: false,
     }
   },
+  methods: {
+    change: msg => {
+      this.isSliderShow = msg;
+      console.log(this.isSliderShow);
+    }
+
+  },
   components: {
-    navbarAll
+    navbarAll,
+    footerPlayer
   }
 }
 
@@ -33,9 +43,14 @@ export default {
 html,body {
   width:100%;
   height:100%;
+  overflow: hidden;
 }
 body {
   margin: 0;
+}
+.lowOpacity{
+  opacity: 0.6;
+
 }
 
 </style>

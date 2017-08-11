@@ -1,7 +1,8 @@
 <template>
   <div id="myMusic">
-    <li v-for="(item,index) in MusicList" v-bind:key="item.id" @click="jump(item)">
-      <img src="static/img/next.png"></img>{{item}}<hr style="opacity:0.1;position:relative;left:50px;"></li>
+    <navbar-all></navbar-all>
+    <li v-for="(item,index) in MusicList" v-bind:key="item.value" @click="jump(item.value)">
+      <img src="static/img/next.png"></img>{{item.text}}<hr style="opacity:0.1;position:relative;left:50px;"></li>
   </div>
 </template>
 
@@ -12,7 +13,13 @@ export default {
   name: 'myMusic',
   data() {
     return {
-      MusicList: ['本地音乐', '最近播放', '下载管理', '我的电台', '我的收藏'],
+      MusicList: [
+        {text: '本地音乐', value: 'localMusic'},
+        {text: '最近播放', value: 'recent'},
+        {text: '下载管理', value: 'download'}, 
+        {text: '我的电台', value: 'radioStation'},
+        {text: '我的收藏', value: 'collection'} 
+        ],
       msg: 'Welcome to mymusic'
     }
   },
@@ -20,8 +27,9 @@ export default {
     greet: function () {
       console.log("aaaa");
     },
-    jump:function(item){
-      console.log('jump to:'+item);
+    jump:function(des){
+      console.log('jump to:'+des);
+      this.$router.push({ path: '/myMusic/' + des})
     }
   },
   components: {

@@ -4,6 +4,7 @@ import hello from '@/components/hello'
 import myMusic from '@/components/myMusic'
 import music from '@/components/music'
 import community from '@/components/community'
+import localMusic from '@/components/myMusic/localMusic'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/community',
       name: 'community',
       component: community
+    },
+    {
+      path: '/myMusic/localMusic',
+      name: 'localMusic',
+      component: localMusic
     }
   ]
 })

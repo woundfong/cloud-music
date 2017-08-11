@@ -1,5 +1,6 @@
 <template>
   <div>
+    <navbar-all></navbar-all>
     <!-- <navbar-all></navbar-all> -->
      <h1> {{ msg }} </h1>
   </div>
