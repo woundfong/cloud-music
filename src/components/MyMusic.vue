@@ -1,6 +1,6 @@
 <template>
   <div id="myMusic">
-    <navbar-all></navbar-all>
+    <navbar-all :isActive_myMusic=true :isActive_music=false :isActive_community=false ></navbar-all>
     <li v-for="(item,index) in MusicList" v-bind:key="item.value" @click="jump(item.value)">
       <img src="static/img/next.png"></img>{{item.text}}<hr style="opacity:0.1;position:relative;left:50px;"></li>
   </div>

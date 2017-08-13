@@ -4,7 +4,7 @@
       <div class='header-main'>
         <div class="header-menu">
           <div class="menu">
-            <img src="../../../static/img/back.png" @click="goBack">
+            <img src="../../../static/img/back.png" @click="goBack()">
           </div>
         </div>
         <div class="header-search">
@@ -28,7 +28,7 @@ export default {
     }
   },
   methods: {
-      goBack: ()=> {
+      goBack(){
           window.history.go(-1);
       }
   },

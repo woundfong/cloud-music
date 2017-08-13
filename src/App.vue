@@ -52,5 +52,7 @@ body {
   opacity: 0.6;
 
 }
-
+li {
+  list-style: none;
+}
 </style>

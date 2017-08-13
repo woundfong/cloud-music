@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar-all></navbar-all>
+    <navbar-all :isActive_myMusic=false :isActive_music=true :isActive_community=false></navbar-all>
     <div class="carousel-wrap" id="carousel">
       <transition-group tag="ul" class="slide-ul" name="list">
         <li v-for="(list, index) in slideList" :key="index" v-show="index===currentIndex" @mouseover="stop" @mouseout="go">

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar-all></navbar-all>
+    <navbar-all :isActive_myMusic=false :isActive_music=false :isActive_community=true></navbar-all>
     <!-- <navbar-all></navbar-all> -->
      <h1> {{ msg }} </h1>
   </div>

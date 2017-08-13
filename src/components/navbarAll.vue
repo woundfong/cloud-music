@@ -18,11 +18,11 @@
             <img src="../../static/img/user.png" id="community">
           </div>
         </div>
-        <div class="header-search">
-          <div class="search">
-            <img src="../../static/img/search.png">
+          <div class="header-search" @click="link($event)">
+            <div class="search">
+              <img src="../../static/img/search.png" id="search">
+            </div>
           </div>
-        </div>
       </div>
   </div>
     <div class="slideContainer" v-bind:style="{right: right}">
@@ -65,11 +65,12 @@
 <script>
 export default {
   name: 'navbarAll',
+  props: ['isActive_myMusic', 'isActive_music','isActive_community'],
   data () {
     return {
-      isActive_myMusic: true,
-      isActive_music: false,
-      isActive_community: false,
+      //isActive_myMusic: true,
+      //isActive_music: false,
+      //isActive_community: false,
       right: '100%',
       isSliderShow: false,
       slideMenus: [
@@ -96,16 +97,17 @@ export default {
   },
   methods: {
     link: function (event) {
-      if (event.target.id == 'myMusic'){
-        this.isActive_myMusic = true;
-        this.isActive_community = this.isActive_music = false;
-      }else if (event.target.id == 'music') {
-        this.isActive_music = true;
-        this.isActive_community = this.isActive_myMusic = false;
-      }else if (event.target.id == 'community') {
-        this.isActive_community = true;
-        this.isActive_music = this.isActive_myMusic = false;
-      }
+      // if (event.target.id == 'myMusic'){
+      //   this.isActive_myMusic = true;
+      //   this.isActive_community = this.isActive_music = false;
+      // }else if (event.target.id == 'music') {
+      //   this.isActive_music = true;
+      //   this.isActive_community = this.isActive_myMusic = false;
+      // }else if (event.target.id == 'community') {
+      //   this.isActive_community = true;
+      //   this.isActive_music = this.isActive_myMusic = false;
+      // }
+      //console.log(isActive1);
       if (event.target.id) {
         this.$router.push({ path: '/'+event.target.id })
       }
@@ -142,6 +144,9 @@ export default {
         this.$emit('toDisable', this.isSliderShow);
       }
     }
+  },
+  mounted() {
+    
   }
 }
 

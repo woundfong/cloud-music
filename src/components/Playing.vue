@@ -132,7 +132,7 @@ li {
 }
 .Paused{
     display: inline-block;
-    background:url("../../static/img/pasued.png") ;
+    background:url("../../static/img/paused.png") ;
   vertical-align: middle;
   width: 44px;
   height: 44px;
