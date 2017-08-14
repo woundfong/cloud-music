@@ -7,6 +7,10 @@ import community from '@/components/community'
 import localMusic from '@/components/myMusic/localMusic'
 import playing from '@/components/playing'
 import search from '@/components/search'
+import personalSuggest from '@/components/music/personalSuggest'
+import rankList from '@/components/music/rankList'
+import singerList from '@/components/music/singerList'
+import songsList from '@/components/music/songsList'
 
 Vue.use(Router)
 
@@ -25,7 +29,34 @@ export default new Router({
     {
       path: '/music',
       name: 'music', 
-      component: music
+      component: music,
+      children:[
+        {
+          path: '/',
+          name: 'home',
+          component: personalSuggest
+        },
+        {
+          path: '/music/personalSuggest',
+          name: 'personalSuggest',
+          component: personalSuggest
+        },
+          {
+      path: '/music/rankList',
+      name: 'rankList',
+      component: rankList
+    },
+    {
+      path: '/music/singerList',
+      name: 'singerList',
+      component: singerList
+    },
+    {
+      path: '/music/songsList',
+      name: 'songsList',
+      component: songsList
+    }  
+      ]
     },
     {
       path: '/community',

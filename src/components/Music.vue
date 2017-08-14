@@ -1,17 +1,18 @@
 <template>
   <div>
-    <navbar-all :isActive_myMusic=false :isActive_music=true :isActive_community=false></navbar-all>
-    <div class="carousel-wrap" id="carousel">
-      <transition-group tag="ul" class="slide-ul" name="list">
-        <li v-for="(list, index) in slideList" :key="index" v-show="index===currentIndex" @mouseover="stop" @mouseout="go">
-          <!-- <a :href="list.clickUrl"> -->
-          <a>
-            <img :src="list.image" :alt="list.desc">
-          </a>
-        </li>
-      </transition-group>
-      <div class="carousel-items">
-        <span v-for="(item,index) in slideList.length" :key="index" :class="{'active':index===currentIndex}" @mouseover="change(index)"></span>
+      <navbar-all :isActive_myMusic=false :isActive_music=true :isActive_community=false></navbar-all>
+      <navbarMusic></navbarMusic>
+     <router-view></router-view> 
+    
+    <div class="click-items">
+      <div class="fm">
+            <img src="../../static/img/fm.png">
+      </div>
+      <div class="calendar">
+            <img src="../../static/img/calendar.png">
+      </div>
+      <div class="ranking">
+            <img src="../../static/img/ranking.png">
       </div>
     </div>
     <!-- <navbar-all></navbar-all> -->
@@ -21,6 +22,7 @@
 
 <script>
 import navbarAll from './navbarAll'
+import navbarMusic from './music/navbarMusic'
 
 export default {
   name: 'music',
@@ -87,7 +89,8 @@ export default {
     }
   },
   components: {
-    navbarAll
+    navbarAll,
+    navbarMusic
   }
 }
 </script>
@@ -158,5 +161,11 @@ export default {
 .list-leave {
   transform: translateX(0)
 }
+
+.fm, .calendar, .ranking{
+  display: inline-block;
+  margin-left: 10px;
+}
+
 
 </style>
