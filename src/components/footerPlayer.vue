@@ -1,37 +1,46 @@
 <template>
-    <div class="footer">
+    <div class="footer" v-if="isFooterPlayerShow">
         <div class="footerLeftSide">
             <span class="song-small-img"></span>
             <div style="display: inline-block">
-                <p class="name">{{currentSong.name}}</p>
-                <p class="singer">{{currentSong.singer}}</p>
+                <p class="name">{{curSong.name}}</p>
+                <p class="singer">{{curSong.singer}}</p>
             </div>
         </div>
         <div class="footerRightSide">
             <canvas :class="{playBtn:!isPlaying, pausedBtn:isPlaying}" @click="togglePlay()" id="circleCanvas"></canvas>
         </div>
           <!-- <span :class="{playBtn:!isPlaying, pausedBtn:isPlaying}" @click="togglePlay()"></span>   -->
-        <audio :src="currentSong.src" style="inline"  id="myAudio" @timeupdate="drawRing()" @ended="autoNext()" @canplay="start()">
+        <audio :src="curSong.src" style="inline"  id="myAudio" @timeupdate="drawRing()"
+         @ended="autoNext()" @canplay="start()">
         </audio>
-        <span class=""
+        
     </div>
 </template>
 
 <script>
+import Vue from 'vue'
+import { mapMutations, mapGetters } from 'vuex'
 
  export default {
   name : 'player',
   data () {
-      return { 
+      return {
+          btnPlay: false,
           isPlaying: false,
           isFirstlyLoad: true,
-          currentSong: {index: 0, name: '千千阙歌', singer: '陈乐基', src: '../../static/陈乐基 - 千千阙歌.mp3'},
           allSongs: [
               {index: 0, name: '千千阙歌', singer: '陈乐基', src: '../../static/陈乐基 - 千千阙歌.mp3'},
               {index: 1, name: '如梦一场', singer: '李健', src: '../../static/李健 - 梦一场.mp3'},
               {index: 2, name: '我很快乐', singer: '刘惜君', src: '../../static/刘惜君 - 我很快乐.mp3'}
           ]
       }
+  },
+  computed: {
+      ...mapGetters({
+          curSong: 'currentSong',
+          isFooterPlayerShow: 'isFooterPlayerShow'
+      })
   },
   mounted(){
     this.init()
@@ -42,21 +51,24 @@
       },
     togglePlay(){
         var myAudio = document.getElementById('myAudio');
-        if (!this.isPlaying){
-            myAudio.play();
+        if (!this.btnPlay){
+            myAudio.play(); this.isPlaying = true;
         }else {
-            myAudio.pause();
+            myAudio.pause(); this.isPlaying = false;
         }
-        this.isPlaying = !this.isPlaying;
+        this.btnPlay = !this.btnPlay;
         if(this.isFirstlyLoad) this.isFirstlyLoad = false;
     },
     autoNext(){
-        this.currentSong = this.allSongs[this.currentSong.index==2 ? 0 : (this.currentSong.index+1)];
+        var _currentSong = this.allSongs[this.curSong.index==2 ? 0 : (this.curSong.index+1)];
+        this.$store.commit('setCurrentSong', _currentSong);
     },
     start(){
         if(this.isFirstlyLoad) return;
         var myAudio = document.getElementById('myAudio');
         myAudio.play();
+        this.btnPlay = true;
+        this.isPlaying = true;
     },
     /**
  * ==================================
@@ -153,7 +165,14 @@ drawRing:function () {
     }
   },
   created: function () {
-  }
+  },
+//   mounted() {
+//       var bus = new Vue();
+//       var vm = this;
+//       bus.$on('localSongs', function(localSongs) {
+//           console.log(localSongs);
+//       })
+//   }
 }
 </script>
 

@@ -32,6 +32,9 @@ export default {
       this.$router.push({ path: '/myMusic/' + des})
     }
   },
+  mounted() {
+    this.$store.commit('setIsFooterPlayerShow', true);
+  },
   components: {
     navbarAll
   }

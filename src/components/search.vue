@@ -15,20 +15,20 @@
       <li @click="goSearch()"> 搜索 "{{search_text}}"</li>
     </div>
      <div class="searchResult">
-      <li v-for="(item, index) in searchResult" :key="index">
+      <li v-for="(item, index) in searchResult" :key="index" @click="goPlay(index, item.name, item.ar[0].name)">
         <p class="song_name"> {{item.name}} </p>
         <p class="song_singer"> {{item.ar[0].name}} </p> 
         <hr style="opacity:0.2">
       </li>
     </div> 
-     {{songUrl}}
-      <audio :src="songUrl"
-      style="inline" controls> </audio> 
+     
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import footerPlayer from './footerPlayer'
+import { mapMutations, mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -66,23 +66,35 @@ export default {
         }).then(function (res) {
           vm.searchResult = res.data.result.songs;
           vm.songID = res.data.result.songs[0].id;
-          vm.playByUrl(vm.songID);
+          //vm.getSongByUrl(vm.songID);
         });
         this.searchMsgDisplay = false;
       
       },
-      playByUrl(id) {
+      getSongByUrl(id, name, singer) {
         var vm = this;
         axios.get('https://api.imjad.cn/cloudmusic', {
           params: {
-            "type": 'song', 
+            "type": 'song',  
             "id": id, 
             "br": '12800'
           }
         }).then(function(res) {
+          var url = res.data.data[0].url;
+          var curSong = {index: 0, name: name, singer: singer, src: url}
+          vm.$store.commit('setCurrentSong', curSong);
           vm.songUrl = res.data.data[0].url;
         })
+      },
+      goPlay(index, name, singer) {
+        this.getSongByUrl(this.searchResult[index].id, name, singer);
+        
       }
+  },
+  mounted() {
+    this.$store.commit('setIsFooterPlayerShow', true);
+  },
+  components: {
   }
 }
 </script>

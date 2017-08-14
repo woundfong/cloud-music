@@ -16,7 +16,9 @@ export default {
       msg: 'Welcome to community'
     }
   },
- 
+  mounted() {
+    this.$store.commit('setIsFooterPlayerShow', true);
+  },
   components: {
     navbarAll
   }

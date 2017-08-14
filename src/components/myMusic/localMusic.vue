@@ -18,13 +18,18 @@
 </template>
 
 <script>
-
+import Vue from 'vue'
 var color="", fontSize=0;
 export default {
   name: 'community',
   data () {
     return {
-      msg: 'Welcome to localMusic'
+      msg: 'Welcome to localMusic',
+      localSongs: [
+              {index: 0, name: '千千阙歌', singer: '陈乐基', src: '../../static/陈乐基 - 千千阙歌.mp3'},
+              {index: 1, name: '如梦一场', singer: '李健', src: '../../static/李健 - 梦一场.mp3'},
+              {index: 2, name: '我很快乐', singer: '刘惜君', src: '../../static/刘惜君 - 我很快乐.mp3'}
+      ]
     }
   },
   methods: {
@@ -34,6 +39,10 @@ export default {
   },
   components: {
     
+  },
+  mounted() {
+    var bus = new Vue();
+    bus.$emit('localSongs', this.localSongs);
   }
 }
 </script>

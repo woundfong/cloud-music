@@ -50,11 +50,12 @@
           </li>
         </div>
         <hr style="opacity:0.1;position:relative;">
-        <div class="sliderFooter">
-          <span>夜间模式</span><span>设置</span><span>推出</span>
-        </div>
+        
         
       </div>
+      <div class="sliderFooter">
+          <span>夜间模式</span><span>设置</span><span>退出</span>
+        </div>
       <div class="emptySlider" @click="slideBack" v-bind:class="{emptySlide: isSliderShow}">
         
       </div>
@@ -91,7 +92,9 @@ export default {
         {text: '音乐闹钟', value: 'alarm'},
         {text: '驾驶模式', value: 'driveMode'},
         {text: '音乐云盘', value: 'cloud'},
-                     
+        {text: '音乐云盘', value: 'cloud'},
+        {text: '音乐云盘', value: 'cloud'},
+        
       ]
     }
   },
@@ -234,16 +237,17 @@ html,body {
 }
 .slideContainer{
   width: 100%;
-  height: 100%;
+  height: 120%;
   position: fixed;
   z-index: 100;
   top: 0;
 }
 .slideMenu {
-  height: 100%;
+  height: 120%;
   width: 85%;
   float: left;
   background-color: white;
+  overflow: auto;
 }
 li {
   list-style: none;
@@ -311,7 +315,8 @@ hr {
 }
 .sliderFooter {
   position: fixed;
-  display: inline-block;
+  
+  bottom: 0%
 }
 .sliderFooter span {
   margin-left: 20px;
