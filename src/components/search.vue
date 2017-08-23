@@ -16,16 +16,24 @@
     </div>
      <div class="searchResult">
       <li v-for="(item, index) in searchResult" :key="index" 
-        @click="goPlay(index, item.name, item.ar[0].name, 'play')"
+        @click="goPlay(index, item.name, item.ar[0].name)"
         @touchstart="touchstart(index)" @touchmove="touchmove()" @touchend="touchend()">
         <p class="song_name"> {{item.name}} </p>
         <p class="song_singer"> {{item.ar[0].name}} </p> 
         <hr style="opacity:0.2">
-        <button type="button" class="downloadBtn" v-if="showDownload&&(curIndex==index)"
-         @click="goPlay(index, item.name, item.ar[0].name, 'download')">下载</button>
+        <!-- <button type="button" class="downloadBtn" v-if="showDownload&&(curIndex==index)"
+         @click="goPlay(index, item.name, item.ar[0].name, 'download')">下载</button> -->
       </li>
     </div> 
-     
+    <div class="bottomslideContainer" v-bind:style="{top: top}">
+      <div class="emptySlider" :class="{emptySlide: showDownload}"
+       @click="slideBack()">
+      </div>
+      <div class="slideMenu">
+        <li @click="download()"> 下载 </li>
+      </div>
+      
+    </div> 
   </div>
 </template>
 
@@ -39,11 +47,10 @@ export default {
       search_text: "",
       searchMsgDisplay: true,
       searchResult: [],
-      songUrl: "",
-      songID: "",
       touchTimeOut: undefined,
       showDownload: false,
-      curIndex: 0
+      curIndex: 0,
+      top: '100%'
     }
   },
   methods: {
@@ -72,13 +79,13 @@ export default {
           }
         }).then(function (res) {
           vm.searchResult = res.data.result.songs;
-          vm.songID = res.data.result.songs[0].id;
+          //vm.songID = res.data.result.songs[0].id;
           //vm.getSongByUrl(vm.songID);
         });
         this.searchMsgDisplay = false;
       
       },
-      getSongByUrl(id, name, singer, type) {
+      getSongByUrl(id) {
         var vm = this;
         axios.get('https://api.imjad.cn/cloudmusic', {
           params: {
@@ -88,20 +95,18 @@ export default {
           }
         }).then(function(res) {
           var url = res.data.data[0].url;
-          console.log(url);
-          if(type==='play'){
-            var curSong = {index: 0, name: name, singer: singer, src: url}
-            vm.$store.commit('setFirstlyLoad', false);
-            vm.$store.commit('setCurrentSong', curSong);
-            vm.songUrl = res.data.data[0].url;
-          }else {
-            
-          }
+          return url;
+          // console.log(url);
+          // var curSong = {index: 0, name: name, singer: singer, src: url, picUrl: vm.searchResult[index].al.picUrl}
+          // vm.$store.commit('setFirstlyLoad', false);
+          // vm.$store.commit('setCurrentSong', curSong);
         })
       },
-      goPlay(index, name, singer, type) {
-        this.getSongByUrl(this.searchResult[index].id, name, singer, type);
-        
+      goPlay(index, name, singer) {
+        var url = this.getSongByUrl(this.searchResult[index].id);
+        var curSong = {index: 0, name: name, singer: singer, src: url, picUrl: this.searchResult[index].al.picUrl}
+        vm.$store.commit('setFirstlyLoad', false);
+        vm.$store.commit('setCurrentSong', curSong);
       },
       touchstart(index) {
         this.touchTimeOut = setTimeout(this.longPress, 800);
@@ -112,11 +117,40 @@ export default {
       },
       touchend() {
         clearTimeout(this.touchTimeOut);
-        this.showDownload = false;
         //console.log("end")
       },
       longPress() {
+        var vm = this;
+        var interval = setInterval(function() {
+          var t = parseInt(vm.top);
+          if(t > 10) {
+            vm.top = t - 10 + '%';
+          }else {
+            clearInterval(interval);
+          }
+        }, 20);
         this.showDownload = true;
+      },
+      download() {
+        var url = this.getSongByUrl(this.searchResult[this.curIndex].id);        
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = this.searchResult[this.curIndex].name + '.mp3';
+        a.click();
+      },
+      slideBack() {
+        if(this.showDownload) {
+          var vm = this;
+          var interval = setInterval(function() {
+            var t = parseInt(vm.top);
+            if(t < 100) {
+              vm.top = t + 10 + '%';
+            }else {
+              clearInterval(interval);
+            }
+          }, 20);
+          this.showDownload = false;
+        }
       }
   },
   mounted() {
@@ -225,5 +259,24 @@ li p {
   border-radius: 5px;
   padding: 5px;
   outline: none
+}
+.bottomslideContainer {
+  width: 100%;
+  height: 120%;
+  position: fixed;
+  z-index: 100;
+}
+.slideMenu {
+  height: 35%;
+  width: 100%;
+  background-color: white;
+  overflow: auto;
+  position: relative;
+  text-align: left;
+  padding: 10px 10px;
+}
+.emptySlider {
+  height: 65%;
+  width: 100%;
 }
 </style>

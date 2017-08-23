@@ -114,7 +114,7 @@ export default {
     },
     slide: function () {
       var vm = this;
-      var slideMenu = document.querySelector('.slideMenu');
+      //var slideMenu = document.querySelector('.slideMenu');
       var interval = setInterval( function() {
         var r = parseInt(vm.right)
         if(r > 0) {
@@ -124,12 +124,12 @@ export default {
         }
       }, 20);
       this.isSliderShow = true;
-      this.$emit('toDisable', this.isSliderShow);
+      //this.$emit('toDisable', this.isSliderShow);
     },
     slideBack: function () {
       if (this.isSliderShow) {
         var vm = this;
-        var slideMenu = document.querySelector('.slideMenu');
+        //var slideMenu = document.querySelector('.slideMenu');
         var interval = setInterval( function() {
           var r = parseInt(vm.right)
           if(r < 100) {
@@ -139,7 +139,7 @@ export default {
           }
         }, 20);
         this.isSliderShow = false;
-        this.$emit('toDisable', this.isSliderShow);
+        //this.$emit('toDisable', this.isSliderShow);
       }
     }
   },
@@ -162,6 +162,10 @@ export default {
 }
 .slideContainer {
   z-index: 100;
+}
+.emptySlide {
+  background-color: white;
+  opacity: 0.5;
 }
 </style>
 
@@ -258,10 +262,7 @@ li {
   height: 100%;
   float: right;
 }
-.emptySlide {
-  background-color: white;
-  opacity: 0.5;
-}
+
 #backgroundImg {
   width: 100%;
 }

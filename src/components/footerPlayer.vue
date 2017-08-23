@@ -1,14 +1,14 @@
 <template>
-    <div class="footerPlayer" v-if="isFooterPlayerShow">
+    <div class="footerPlayer" v-if="isFooterPlayerShow" @click="jumpToPlaying()">
         <div class="footerLeftSide">
-            <span class="song-small-img"></span>
+            <img class="song-small-img" :src="curSong.picUrl"></img>
             <div style="display: inline-block">
                 <p class="name">{{curSong.name}}</p>
                 <p class="singer">{{curSong.singer}}</p>
             </div>
         </div>
         <div class="footerRightSide">
-            <canvas :class="{playBtn:!isPlaying, pausedBtn:isPlaying}" @click="togglePlay()" id="circleCanvas"></canvas>
+            <canvas :class="{playBtn:!isPlaying, pausedBtn:isPlaying}" @click.stop="togglePlay()" id="circleCanvas"></canvas>
         </div>
           <!-- <span :class="{playBtn:!isPlaying, pausedBtn:isPlaying}" @click="togglePlay()"></span>   -->
         <audio :src="curSong.src" style="inline"  id="myAudio" @timeupdate="drawRing()"
@@ -29,9 +29,9 @@ import { mapMutations, mapGetters } from 'vuex'
           btnPlay: false,
           isPlaying: false,
           allSongs: [
-              {index: 0, name: '千千阙歌', singer: '陈乐基', src: '../../static/陈乐基 - 千千阙歌.mp3'},
-              {index: 1, name: '如梦一场', singer: '李健', src: '../../static/李健 - 梦一场.mp3'},
-              {index: 2, name: '我很快乐', singer: '刘惜君', src: '../../static/刘惜君 - 我很快乐.mp3'}
+              {index: 0, name: '千千阙歌', singer: '陈乐基', src: '../../static/陈乐基 - 千千阙歌.mp3', picUrl: '../../static/img/5.jpg'},
+              {index: 1, name: '如梦一场', singer: '李健', src: '../../static/李健 - 梦一场.mp3', picUrl: '../../static/img/4.jpg'},
+              {index: 2, name: '我很快乐', singer: '刘惜君', src: '../../static/刘惜君 - 我很快乐.mp3', picUrl: '../../static/img/3.jpg'}
           ]
       }
   },
@@ -69,6 +69,10 @@ import { mapMutations, mapGetters } from 'vuex'
         myAudio.play();
         this.btnPlay = true;
         this.isPlaying = true;
+    },
+    jumpToPlaying() {
+        this.$store.commit('setIsFooterPlayerShow', false);
+        this.$router.push({ path: '/playing' })
     },
     /**
  * ==================================
@@ -206,7 +210,7 @@ drawRing:function () {
     float:right
 }
 .song-small-img {
-    background-image: url("../../static/img/5.jpg");
+    /* background-image: url("../../static/img/5.jpg"); */
     background-size: 46px 46px;
     width: 46px;
     height: 46px;
