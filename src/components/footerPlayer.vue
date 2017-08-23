@@ -1,5 +1,5 @@
 <template>
-    <div class="footer" v-if="isFooterPlayerShow">
+    <div class="footerPlayer" v-if="isFooterPlayerShow">
         <div class="footerLeftSide">
             <span class="song-small-img"></span>
             <div style="display: inline-block">
@@ -12,7 +12,7 @@
         </div>
           <!-- <span :class="{playBtn:!isPlaying, pausedBtn:isPlaying}" @click="togglePlay()"></span>   -->
         <audio :src="curSong.src" style="inline"  id="myAudio" @timeupdate="drawRing()"
-         @ended="autoNext()" @canplay="start()">
+         @ended="autoNext()" @canplay="start()" @loadedmetadata="start()">
         </audio>
         
     </div>
@@ -28,7 +28,6 @@ import { mapMutations, mapGetters } from 'vuex'
       return {
           btnPlay: false,
           isPlaying: false,
-          isFirstlyLoad: true,
           allSongs: [
               {index: 0, name: '千千阙歌', singer: '陈乐基', src: '../../static/陈乐基 - 千千阙歌.mp3'},
               {index: 1, name: '如梦一场', singer: '李健', src: '../../static/李健 - 梦一场.mp3'},
@@ -39,7 +38,8 @@ import { mapMutations, mapGetters } from 'vuex'
   computed: {
       ...mapGetters({
           curSong: 'currentSong',
-          isFooterPlayerShow: 'isFooterPlayerShow'
+          isFooterPlayerShow: 'isFooterPlayerShow',
+          isFirstlyLoad: 'firstlyLoad'
       })
   },
   mounted(){
@@ -57,7 +57,7 @@ import { mapMutations, mapGetters } from 'vuex'
             myAudio.pause(); this.isPlaying = false;
         }
         this.btnPlay = !this.btnPlay;
-        if(this.isFirstlyLoad) this.isFirstlyLoad = false;
+        if(this.isFirstlyLoad) this.$store.commit('setFirstlyLoad', false);
     },
     autoNext(){
         var _currentSong = this.allSongs[this.curSong.index==2 ? 0 : (this.curSong.index+1)];
@@ -176,14 +176,15 @@ drawRing:function () {
 }
 </script>
 
-<style scoped>
-.footer {
-    position: fixed;
-    bottom: 0%;
-    width: 100%;
-    border-top: 1px #ccc solid;
-    padding: 5px;
+<style>
+.footerPlayer{
+    z-index: 1;
 }
+</style>
+
+
+<style scoped>
+
 .playBtn {
     background-image: url("../../static/img/playing.png");
     background-size: 40px 40px;

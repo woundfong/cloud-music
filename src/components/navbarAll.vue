@@ -36,7 +36,7 @@
             <span id="sign">签到</span>
           </div>
         </div>
-        <div>
+        <div class="list">
           <li v-for="(item, index) in slideMenus" :key="index">
             {{item.text}}
           </li>
@@ -91,10 +91,7 @@ export default {
         {text: '扫一扫', value: 'scan'},
         {text: '音乐闹钟', value: 'alarm'},
         {text: '驾驶模式', value: 'driveMode'},
-        {text: '音乐云盘', value: 'cloud'},
-        {text: '音乐云盘', value: 'cloud'},
-        {text: '音乐云盘', value: 'cloud'},
-        
+        {text: '音乐云盘', value: 'cloud'}
       ]
     }
   },
@@ -130,9 +127,7 @@ export default {
       this.$emit('toDisable', this.isSliderShow);
     },
     slideBack: function () {
-      console.log("inin")
       if (this.isSliderShow) {
-        console.log("in");
         var vm = this;
         var slideMenu = document.querySelector('.slideMenu');
         var interval = setInterval( function() {
@@ -164,6 +159,9 @@ export default {
   display:block;
   width:100%;
   height:100%;
+}
+.slideContainer {
+  z-index: 100;
 }
 </style>
 
@@ -248,6 +246,7 @@ html,body {
   float: left;
   background-color: white;
   overflow: auto;
+  position: relative;
 }
 li {
   list-style: none;
@@ -268,7 +267,7 @@ li {
 }
 .allInfo {
   position: absolute;
-  top: 10%;
+  top: 7%;
   width: 85%;
   text-align: left;
   padding-left: 10px;
@@ -293,6 +292,10 @@ li {
   color: white;
   margin-left: 4px;
   display: block;
+}
+.list {
+  height: 90%;
+  overflow: auto;
 }
 #level {
   border: 1px solid white;

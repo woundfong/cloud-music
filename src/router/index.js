@@ -33,7 +33,7 @@ export default new Router({
       children:[
         {
           path: '/',
-          name: 'home',
+          name: 'musicHome',
           component: personalSuggest
         },
         {

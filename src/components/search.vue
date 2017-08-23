@@ -2,7 +2,7 @@
   <div id="content">
     <div class='header'>
       <div class='header-main'>
-        <div class="header-back"  @click="goBack">
+        <div class="header-back">
             <img id="back" src="../../static/img/back.png" @click="goBack()">
         </div>
         <form>
@@ -15,10 +15,14 @@
       <li @click="goSearch()"> 搜索 "{{search_text}}"</li>
     </div>
      <div class="searchResult">
-      <li v-for="(item, index) in searchResult" :key="index" @click="goPlay(index, item.name, item.ar[0].name)">
+      <li v-for="(item, index) in searchResult" :key="index" 
+        @click="goPlay(index, item.name, item.ar[0].name, 'play')"
+        @touchstart="touchstart(index)" @touchmove="touchmove()" @touchend="touchend()">
         <p class="song_name"> {{item.name}} </p>
         <p class="song_singer"> {{item.ar[0].name}} </p> 
         <hr style="opacity:0.2">
+        <button type="button" class="downloadBtn" v-if="showDownload&&(curIndex==index)"
+         @click="goPlay(index, item.name, item.ar[0].name, 'download')">下载</button>
       </li>
     </div> 
      
@@ -36,7 +40,10 @@ export default {
       searchMsgDisplay: true,
       searchResult: [],
       songUrl: "",
-      songID: ""
+      songID: "",
+      touchTimeOut: undefined,
+      showDownload: false,
+      curIndex: 0
     }
   },
   methods: {
@@ -61,7 +68,7 @@ export default {
           params: {
             "type": 'search',
             "s": this.search_text,
-            "limit": 5
+            "limit": 20
           }
         }).then(function (res) {
           vm.searchResult = res.data.result.songs;
@@ -71,7 +78,7 @@ export default {
         this.searchMsgDisplay = false;
       
       },
-      getSongByUrl(id, name, singer) {
+      getSongByUrl(id, name, singer, type) {
         var vm = this;
         axios.get('https://api.imjad.cn/cloudmusic', {
           params: {
@@ -81,14 +88,35 @@ export default {
           }
         }).then(function(res) {
           var url = res.data.data[0].url;
-          var curSong = {index: 0, name: name, singer: singer, src: url}
-          vm.$store.commit('setCurrentSong', curSong);
-          vm.songUrl = res.data.data[0].url;
+          console.log(url);
+          if(type==='play'){
+            var curSong = {index: 0, name: name, singer: singer, src: url}
+            vm.$store.commit('setFirstlyLoad', false);
+            vm.$store.commit('setCurrentSong', curSong);
+            vm.songUrl = res.data.data[0].url;
+          }else {
+            
+          }
         })
       },
-      goPlay(index, name, singer) {
-        this.getSongByUrl(this.searchResult[index].id, name, singer);
+      goPlay(index, name, singer, type) {
+        this.getSongByUrl(this.searchResult[index].id, name, singer, type);
         
+      },
+      touchstart(index) {
+        this.touchTimeOut = setTimeout(this.longPress, 800);
+        this.curIndex = index;
+      },
+      touchmove() {
+        clearTimeout(this.touchTimeOut);
+      },
+      touchend() {
+        clearTimeout(this.touchTimeOut);
+        this.showDownload = false;
+        //console.log("end")
+      },
+      longPress() {
+        this.showDownload = true;
       }
   },
   mounted() {
@@ -98,6 +126,14 @@ export default {
   }
 }
 </script>
+<style>
+body, html{
+  height: 100%;
+}
+#content {
+  height: 100%;
+}
+</style>
 
 <style scoped>
 html {
@@ -169,6 +205,8 @@ input:-moz-placeholder {
 .searchResult {
   text-align: left;
   padding: 5px 10px;
+  height: 80%;
+  overflow: auto;
 }
 .song_singer {
   font-size: 0.5em
@@ -179,5 +217,13 @@ li p {
 }
 .searchResult li:active {
   background-color: #F8F8FF
+}
+.downloadBtn {
+  width: 100%;
+  margin-top: 0;
+  background-color: azure;
+  border-radius: 5px;
+  padding: 5px;
+  outline: none
 }
 </style>

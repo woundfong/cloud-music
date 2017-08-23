@@ -39,6 +39,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  height: 100%;
 }
 html,body {
   width:100%;
@@ -54,5 +55,13 @@ body {
 }
 li {
   list-style: none;
+}
+.footerPlayer {
+    position: fixed;
+    bottom: 0%;
+    width: 100%;
+    border-top: 1px #ccc solid;
+    padding: 5px;
+    z-index: 200
 }
 </style>

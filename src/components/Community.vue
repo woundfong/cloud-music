@@ -2,18 +2,37 @@
   <div>
     <navbar-all :isActive_myMusic=false :isActive_music=false :isActive_community=true></navbar-all>
     <!-- <navbar-all></navbar-all> -->
-     <h1> {{ msg }} </h1>
+     <form>
+      <input type="text" name="username" v-model="userName"> <br>
+      
+      <a href="javascript:;" @click="addUser">提交</a>
+    </form>
   </div>
 </template>
 
 <script>
 import navbarAll from './navbarAll'
+import axios from 'axios'
+
 var color="", fontSize=0;
 export default {
   name: 'community',
   data () {
     return {
-      msg: 'Welcome to community'
+      msg: 'Welcome to community',
+      userName: ''
+    }
+  },
+  methods: {
+    addUser() {
+      var name = this.userName;
+      axios.post('/api/user/addUser', {
+        params: {
+          username: name
+        } 
+      }).then((response) => {
+        console.log(response);
+      })
     }
   },
   mounted() {
