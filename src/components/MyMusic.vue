@@ -14,11 +14,11 @@ export default {
   data() {
     return {
       MusicList: [
-        {text: '本地音乐', value: 'localMusic'},
-        {text: '最近播放', value: 'recent'},
-        {text: '下载管理', value: 'download'}, 
-        {text: '我的电台', value: 'radioStation'},
-        {text: '我的收藏', value: 'collection'} 
+        {text: '本地音乐', value: 'localMusic'}
+        // {text: '最近播放', value: 'recent'},
+        // {text: '下载管理', value: 'download'}, 
+        // {text: '我的电台', value: 'radioStation'},
+        // {text: '我的收藏', value: 'collection'} 
         ],
       msg: 'Welcome to mymusic'
     }

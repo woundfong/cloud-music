@@ -30,7 +30,9 @@
        @click="slideBack()">
       </div>
       <div class="slideMenu">
-        <li @click="download()"> 下载 </li>
+        <li @click.stop="download()"> 下载 </li>
+        <li @click.stop="keep()"> 添加到播放列表 </li>
+        <li @click.stop="toNext()"> 下一首播放 </li>
       </div>
       
     </div> 
@@ -63,13 +65,13 @@ export default {
         }
       },
       searchBlur() {
-        var vm = this;
+        let vm = this;
         setTimeout(function(){
           vm.searchMsgDisplay = false;
         },10)
       },
       goSearch() {
-        var vm = this;
+        let vm = this;
         //var songID = "";
         axios.get('https://api.imjad.cn/cloudmusic', {
           params: {
@@ -85,8 +87,9 @@ export default {
         this.searchMsgDisplay = false;
       
       },
-      getSongByUrl(id) {
-        var vm = this;
+      goPlay(index, name, singer) {
+        let vm = this;
+        let id = this.searchResult[index].id;
         axios.get('https://api.imjad.cn/cloudmusic', {
           params: {
             "type": 'song',  
@@ -94,19 +97,55 @@ export default {
             "br": '12800'
           }
         }).then(function(res) {
-          var url = res.data.data[0].url;
-          return url;
-          // console.log(url);
-          // var curSong = {index: 0, name: name, singer: singer, src: url, picUrl: vm.searchResult[index].al.picUrl}
-          // vm.$store.commit('setFirstlyLoad', false);
-          // vm.$store.commit('setCurrentSong', curSong);
+          console.log(res.data);
+          let url = res.data.data[0].url;
+          let curSong = {name: name, singer: singer, src: url, picUrl: vm.searchResult[index].al.picUrl};
+          vm.$store.commit('setFirstlyLoad', false);
+          vm.$store.commit('setCurrentSong', curSong);
+          
         })
       },
-      goPlay(index, name, singer) {
-        var url = this.getSongByUrl(this.searchResult[index].id);
-        var curSong = {index: 0, name: name, singer: singer, src: url, picUrl: this.searchResult[index].al.picUrl}
-        vm.$store.commit('setFirstlyLoad', false);
-        vm.$store.commit('setCurrentSong', curSong);
+      toNext() {
+        let vm = this;
+        let id = this.searchResult[this.curIndex].id;
+        axios.get('https://api.imjad.cn/cloudmusic', {
+          params: {
+            "type": 'song',  
+            "id": id, 
+            "br": '12800'
+          }
+        }).then(function(res) {
+          console.log(res.data);
+          let url = res.data.data[0].url;
+          let insertedSong = {
+            name: vm.searchResult[vm.curIndex].name, 
+            singer: vm.searchResult[vm.curIndex].ar[0].name,
+            src: url, 
+            picUrl: vm.searchResult[vm.curIndex].al.picUrl
+          };
+          vm.$store.commit('setInsertedSong', insertedSong);
+        })
+      },
+      keep() {
+        let vm = this;
+        let id = this.searchResult[index].id;
+        axios.get('https://api.imjad.cn/cloudmusic', {
+          params: {
+            "type": 'song',  
+            "id": id, 
+            "br": '12800'
+          }
+        }).then(function(res) {
+          console.log(res.data);
+          let url = res.data.data[0].url;
+          let addedSong = {
+            name: vm.searchResult[vm.curIndex].name, 
+            singer: vm.searchResult[vm.curIndex].ar[0].name,
+            src: url, 
+            picUrl: vm.searchResult[vm.curIndex].al.picUrl
+          };
+          vm.$store.commit('addSongs', addedSong);          
+        })
       },
       touchstart(index) {
         this.touchTimeOut = setTimeout(this.longPress, 800);
@@ -131,13 +170,13 @@ export default {
         }, 20);
         this.showDownload = true;
       },
-      download() {
-        var url = this.getSongByUrl(this.searchResult[this.curIndex].id);        
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = this.searchResult[this.curIndex].name + '.mp3';
-        a.click();
-      },
+      // download() {
+      //   var url = this.getSongByUrl(this.searchResult[this.curIndex].id);        
+      //   var a = document.createElement('a');
+      //   a.href = url;
+      //   a.download = this.searchResult[this.curIndex].name + '.mp3';
+      //   a.click();
+      // },
       slideBack() {
         if(this.showDownload) {
           var vm = this;
@@ -267,7 +306,7 @@ li p {
   z-index: 100;
 }
 .slideMenu {
-  height: 35%;
+  height: 40%;
   width: 100%;
   background-color: white;
   overflow: auto;
@@ -275,8 +314,14 @@ li p {
   text-align: left;
   padding: 10px 10px;
 }
+.slideMenu li {
+  margin-top: 10px;
+}
+.slideMenu li:first-child {
+  cursor: not-allowed;
+}
 .emptySlider {
-  height: 65%;
+  height: 60%;
   width: 100%;
 }
 </style>

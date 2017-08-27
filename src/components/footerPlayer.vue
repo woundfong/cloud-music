@@ -27,19 +27,16 @@ import { mapMutations, mapGetters } from 'vuex'
   data () {
       return {
           btnPlay: false,
-          isPlaying: false,
-          allSongs: [
-              {index: 0, name: '千千阙歌', singer: '陈乐基', src: '../../static/陈乐基 - 千千阙歌.mp3', picUrl: '../../static/img/5.jpg'},
-              {index: 1, name: '如梦一场', singer: '李健', src: '../../static/李健 - 梦一场.mp3', picUrl: '../../static/img/4.jpg'},
-              {index: 2, name: '我很快乐', singer: '刘惜君', src: '../../static/刘惜君 - 我很快乐.mp3', picUrl: '../../static/img/3.jpg'}
-          ]
+          isPlaying: false
       }
   },
   computed: {
       ...mapGetters({
           curSong: 'currentSong',
           isFooterPlayerShow: 'isFooterPlayerShow',
-          isFirstlyLoad: 'firstlyLoad'
+          isFirstlyLoad: 'firstlyLoad',
+          curIndex: 'curIndex',
+          allSongs: 'songsList'
       })
   },
   mounted(){
@@ -60,8 +57,7 @@ import { mapMutations, mapGetters } from 'vuex'
         if(this.isFirstlyLoad) this.$store.commit('setFirstlyLoad', false);
     },
     autoNext(){
-        var _currentSong = this.allSongs[this.curSong.index==2 ? 0 : (this.curSong.index+1)];
-        this.$store.commit('setCurrentSong', _currentSong);
+        this.$store.commit('autoNext');
     },
     start(){
         if(this.isFirstlyLoad) return;
